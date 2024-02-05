@@ -1,7 +1,8 @@
 # AirBnB_clone
 <p align="center">
-  <img src=""https://github.com/Adeniyii/AirBnB_clone/blob/main/assets/hbnb_logo.png>
+  <img src="https://github.com/Adeniyii/AirBnB_clone/blob/main/assets/hbnb_logo.png">
 </p>
+---
 # Reading Concepts
 ## [Packages](https://docs.python.org/3.4/tutorial/modules.html#packages) 
 - A python file can be a module but when this file is in a folder, we call this folder a package
