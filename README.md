@@ -1,7 +1,5 @@
 # AirBnB_clone
-<p align="center">
-  <img src="https://github.com/Adeniyii/AirBnB_clone/blob/main/assets/hbnb_logo.png">
-</p>
+![AirBnB](https://github.com/Adeniyii/AirBnB_clone/blob/main/assets/hbnb_logo.png)
 ---
 # Reading Concepts
 ## [Packages](https://docs.python.org/3.4/tutorial/modules.html#packages) 
