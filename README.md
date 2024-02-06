@@ -12,4 +12,5 @@
 - You can also relative imports, with the `from module import name` form of import statement. use leading dots to indicate the current and parent packages involved in the relative import.
 __note:__  relative imports are based on the name of the current module. Since the name of the main module is always "__main__", modules intended for use as the main module of a Python application must always use absolute imports.
 
-
+## cmd - support for line-oriented command intepreters
+- The Cmd class provides a simple framework for writing line oriented command intepreters.
