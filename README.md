@@ -14,3 +14,6 @@ __note:__  relative imports are based on the name of the current module. Since 
 
 ## cmd - support for line-oriented command intepreters
 - The Cmd class provides a simple framework for writing line oriented command intepreters.
+
+### UUID (UNIVERSALLY UNIQUE IDENTIFIER)
+- Used to uniquely identify objects or entities in  a distributed system
