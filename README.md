@@ -14,6 +14,31 @@ __note:__  relative imports are based on the name of the current module. Since 
 
 ## cmd - support for line-oriented command intepreters
 - The Cmd class provides a simple framework for writing line oriented command intepreters.
+- Example:
+```python
+import cmd
 
+class MyCmdInterpreter(cmd.Cmd):
+	prompt = '>>'
+def do_hello(self, args):
+"""
+Prints a greeting message
+"""
+	print("Hello, {}".format(args))
+
+def do_quit(self, args):
+"""Exit the command interpreter"""
+	print("Quitting")
+	return True
+if __name__ == "__main__":
+	my_cmd = MyCmdInterpreter()
+    my_cmd.cmdloop()
+```
+
+__`Note!`__
+- Prompt attribute is the command prompt displayed to the user
+- We define methods for each command we want to support. The method names must start with `do_`. For example, `do_hello` and `do_quit`.
+- -The docstrings of these methods will be displayed when the user types `help` followed by the command name (e.g., `help hello`).
+- The `do_quit` method returns `True` to signal the interpreter to exit.
 ### UUID (UNIVERSALLY UNIQUE IDENTIFIER)
 - Used to uniquely identify objects or entities in  a distributed system
