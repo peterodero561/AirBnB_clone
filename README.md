@@ -1,44 +1,31 @@
 # AirBnB_clone
 ![AirBnB](https://github.com/Adeniyii/AirBnB_clone/blob/main/assets/hbnb_logo.png)
----
-# Reading Concepts
-## [Packages](https://docs.python.org/3.4/tutorial/modules.html#packages) 
-- A python file can be a module but when this file is in a folder, we call this folder a package
-- Packages are a way of structuring python's module namespace using "dotted "module names, e.g. the module `a.b` designates a module *b* found in package *a*
-- Using dotted module names saves author from having to worry about each other's module name.
-- The __`init.py`__ are required to make python treat the directories as containing packages.
-- use of `import * from a package`may lead to unwanted side effects , its dangerous  and considered a bad practice . In that case , `__init__.py` should not be empty but must contain a list of modules to load.
-- When packages are structured into subpackages, you can use absolute imports to refer to submodules of siblings packages.(Absolute)
-- You can also relative imports, with the `from module import name` form of import statement. use leading dots to indicate the current and parent packages involved in the relative import.
-__note:__  relative imports are based on the name of the current module. Since the name of the main module is always "__main__", modules intended for use as the main module of a Python application must always use absolute imports.
 
-## cmd - support for line-oriented command intepreters
-- The Cmd class provides a simple framework for writing line oriented command intepreters.
-- Example:
-```python
-import cmd
+## Table of Contents
+- [Description](#Description)
+- [Command Interpreter](#command-interpreter)
 
-class MyCmdInterpreter(cmd.Cmd):
-	prompt = '>>'
-def do_hello(self, args):
-"""
-Prints a greeting message
-"""
-	print("Hello, {}".format(args))
+## Description
+The AIBNB AirBnB_clone project is a clone of the popular platform AirBnB. It allows users to search, book, and manage their AirBnB listings To help in covering higher level programming track.
+The final product is a complete web application composed of:
+| Part                    | Description                                                                             |
+| ----------------------- | --------------------------------------------------------------------------------------- |
+| Command Interpreter     | A command-line interface designed for manipulating data without a visual interface, similar to a Shell. Ideal for development and debugging purposes. |
+| Website (Front-end)     | A web-based front-end that showcases the final product to users. It incorporates both static and dynamic elements, providing an interactive experience for everyone. |
+| Data Storage            | The storage system, either a database or files, responsible for persistently storing data. The data represents objects manipulated by the command interpreter. |
+| API                     | An Application Programming Interface that serves as a communication bridge between the front-end and the data storage. It facilitates operations like retrieving, creating, deleting, and updating data objects. |
 
-def do_quit(self, args):
-"""Exit the command interpreter"""
-	print("Quitting")
-	return True
-if __name__ == "__main__":
-	my_cmd = MyCmdInterpreter()
-    my_cmd.cmdloop()
-```
+### Expected web static final product:
+![final](https://s3.amazonaws.com/intranet-projects-files/holbertonschool-higher-level_programming+/268/8-index.png)
 
-__`Note!`__
-- Prompt attribute is the command prompt displayed to the user
-- We define methods for each command we want to support. The method names must start with `do_`. For example, `do_hello` and `do_quit`.
-- -The docstrings of these methods will be displayed when the user types `help` followed by the command name (e.g., `help hello`).
-- The `do_quit` method returns `True` to signal the interpreter to exit.
-### UUID (UNIVERSALLY UNIQUE IDENTIFIER)
-- Used to uniquely identify objects or entities in  a distributed system
+### Web stack for building the product:
+![webstack](https://i.imgur.com/lgZnZrz.png)
+
+----
+
+## 0X00 AirBnB_clone - The console (Command Interpreter)
+![console](https://github.com/PierreBeaujuge/AirBnB_clone/raw/master/0x00-images/img_1.png)
+- The command interpreter is a crucial part of the project, allowing users to interact with and control the functionalities of your system. 
+- It interprets commands provided by the user and executes corresponding actions.
+- The goal is to manipulate data without a visual interface
+
