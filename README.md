@@ -29,8 +29,8 @@ The final product is a complete web application composed of:
 - It interprets commands provided by the user and executes corresponding actions.
 - The goal is to manipulate data without a visual interface
 
-** Usage: **
+**Usage:**
 - on the project directory run the command `python3 console.py` or `./console.py`
-the *hbnb* console will start. You can type `help or `?`` to view the available commands
+the *hbnb* console will start. You can type `help` or `?` to view the available commands
 You can also type `help [command]` to get more information about a specific command
 - To exit the console type `quit`
