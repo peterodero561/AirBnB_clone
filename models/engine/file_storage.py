@@ -9,7 +9,7 @@ class FileStorage:
     '''
     __file_path = 'file.json'
     __objects = {}
-        
+
     def all(self):
         '''method to return the dictionary __objects'''
         return self.__objects
@@ -23,10 +23,10 @@ class FileStorage:
         '''serializes __objects to the json file'''
         serialized_objs = {}
         for key, obj in self.__objects.items():
-           serialized_objs[key] = obj.to_dict()
+            serialized_objs[key] = obj.to_dict()
         with open(self.__file_path, 'w', encoding="utf-8") as f:
             json.dump(serialized_objs, f)
-                
+
     def reload(self):
         '''deserializes the JSON file to __objects
         (only if the JSON file (__file_path) exists;
@@ -41,8 +41,5 @@ class FileStorage:
                     cls = eval(class_name)
                     obj = cls(**val)
                     self.__objects[key] = obj
-                print("Objects loaded from {}".format(self.__file_path))
         except FileNotFoundError:
-            print("File {} not found so no object loaded".format(self.__file_path))
-        except json.JSONDecodeError:
-            print("Ivalid JSON data or empty file")
+            pass
