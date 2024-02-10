@@ -5,7 +5,7 @@
 import cmd
 
 
-class MyConsole(cmd.Cmd):
+class HBNBcommand(cmd.Cmd):
     """ Console class to handle the input and output """
     intro = "Welcome to HBNB console!\nType help or ? to list commands.\n"
     prompt = "(hbnb)"
@@ -21,4 +21,4 @@ class MyConsole(cmd.Cmd):
 
 
 if __name__ == "__main__":
-    MyConsole().cmdloop()
+    HBNBcommand().cmdloop()
