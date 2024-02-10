@@ -10,18 +10,21 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         '''initializes the BaseModel object creeated'''
+        from models import storage
         if kwargs:
             for key, value in kwargs.items():
                 if key == '__class__':
                     continue
                 if key in ['created_at', 'updated_at']:
-                    value = datetime.datetime.strptime
-                    (value, "%Y-%m-%dT%H:%M:%S.%f")
+                    value = datetime.datetime.strptime(
+                            value, "%Y-%m-%dT%H:%M:%S.%f")
                 setattr(self, key, value)
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.datetime.now()
             self.updated_at = datetime.datetime.now()
+            # Add a call to the new() method on storage
+            storage.new(self)
 
     def __str__(self):
         '''
@@ -32,9 +35,12 @@ class BaseModel:
 
     def save(self):
         '''updates the public instance atrribute
-        updated_at with the current datetime
+        updated_at with the current datetime and
+        Saves instance to storage
         '''
+        from models import storage
         self.updated_at = datetime.datetime.now()
+        storage.save()
 
     def to_dict(self):
         '''returns a dictionary containing all
@@ -49,3 +55,15 @@ class BaseModel:
                 'updated_at': updated_at_ISO
                 }
         return dictionary
+
+    @classmethod
+    def from_dict(cls, dict_obj):
+        '''creates an instance from a dictionary'''
+        if '__class__' in dict_obj:
+            class_name = dict_obj.pop('__class__')
+            if class_name == cls.__name__:
+                for key, value in dict_obj.items():
+                    if key in ('created_at', 'updated_at'):
+                        dict_obj[key] = datetime.fromisoformat(value)
+                return cls(**dict_obj)
+        return None
