@@ -15,9 +15,11 @@ class BaseModel:
             for key, value in kwargs.items():
                 if key == '__class__':
                     continue
-                if key in ['created_at', 'updated_at']:
+                if key in ['created_at', 'updated_at'] and \
+                        isinstance(value, str):
                     value = datetime.datetime.strptime(
-                            value, "%Y-%m-%dT%H:%M:%S.%f")
+                                value, "%Y-%m-%dT%H:%M:%S.%f")
+
                 setattr(self, key, value)
         else:
             self.id = str(uuid.uuid4())
@@ -64,6 +66,10 @@ class BaseModel:
             if class_name == cls.__name__:
                 for key, value in dict_obj.items():
                     if key in ('created_at', 'updated_at'):
-                        dict_obj[key] = datetime.fromisoformat(value)
+                        if isinstance(value, str):
+                            value = datetime.datetime.strptime(
+                                    value, "%Y-%m-%dT%H:%M:%S.%f")
+                        setattr(cls, key, value)
+                        # dict_obj[key] = value
                 return cls(**dict_obj)
         return None
