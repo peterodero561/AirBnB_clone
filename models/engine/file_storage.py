@@ -3,6 +3,11 @@
 import json
 
 
+class EmptyFileError(Exception):
+    """Custom exception for empty file."""
+    pass
+
+
 class FileStorage:
     '''class FileStorage that serializes instances to a
         JSON file and deserializes JSON file to instances
@@ -21,11 +26,14 @@ class FileStorage:
 
     def save(self):
         '''serializes __objects to the json file'''
-        serialized_objs = {}
-        for key, obj in self.__objects.items():
-            serialized_objs[key] = obj.to_dict()
-        with open(self.__file_path, 'w', encoding="utf-8") as f:
-            json.dump(serialized_objs, f)
+        if not self.__objects:
+            raise EmptyFileError("No objects to save.")
+        else:
+            serialized_objs = {}
+            for key, obj in self.__objects.items():
+                serialized_objs[key] = obj.to_dict()
+            with open(self.__file_path, 'w', encoding="utf-8") as f:
+                json.dump(serialized_objs, f)
 
     def reload(self):
         '''deserializes the JSON file to __objects
@@ -42,4 +50,4 @@ class FileStorage:
                     obj = cls(**val)
                     self.__objects[key] = obj
         except FileNotFoundError:
-            pass
+            self.__objects = {}
