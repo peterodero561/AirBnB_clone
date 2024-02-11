@@ -4,7 +4,7 @@
 """ Console module """
 import cmd
 from models.base_model import BaseModel
-
+from models import storage
 
 class HBNBcommand(cmd.Cmd, BaseModel):
     """ Console class to handle the input and output """
@@ -49,8 +49,55 @@ class HBNBcommand(cmd.Cmd, BaseModel):
         Print string representation of instance based on class name
         and id
         """
+        words = line.split()
+        if len(words) < 1:
+            print("** class name missing **")
+            return
+        class_name = words[0]
 
+        if self.check_class(class_name):
+            if len(words) < 2:
+                print("** instance id missing **")
+                return
+            instance_id = words[1]
 
+            key = "{}.{}".format(class_name, instance_id)
+            objects_dict = storage.all()
+
+            if key in objects_dict:
+                instance = objects_dict[key]
+                print(instance)
+            else:
+                print("** no instance found **")
+
+        else:
+            print("** class doesn't exist **")
+            return
+
+    def do_destroy(self, line):
+        """
+        Deletes an instance based on the class name and id
+        """
+        words = line.split()
+        if len(words) < 1:
+            print("** class name missing **")
+            return
+        class_name = words[0]
+
+        if self.check_class(class_name):
+            if len(words) < 2:
+                print("** instance id missing **")
+                return
+            instance_id = words[1]
+
+            key = "{}.{}".format(class_name, instance_id)
+            objects_dict = storage.all()
+
+            if key in objects_dict:
+                del objects_dict[key]
+                storage.save()
+            else:
+                print("** no instance found **")
 
 
 if __name__ == "__main__":
