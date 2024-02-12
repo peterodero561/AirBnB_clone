@@ -6,6 +6,7 @@ import cmd
 from models.base_model import BaseModel
 from models import storage
 
+
 class HBNBcommand(cmd.Cmd, BaseModel):
     """ Console class to handle the input and output """
     #    intro = "Welcome to HBNB console!\nType help or ? to list commands.\n"
@@ -33,7 +34,7 @@ class HBNBcommand(cmd.Cmd, BaseModel):
 
     def do_create(self, line):
         """
-        Creates a new instance of BaseModel, saves it (to the JSON file) and 
+        Creates a new instance of BaseModel, saves it (to the JSON file) and
         prints the id
         """
         if line == "":
@@ -84,12 +85,14 @@ class HBNBcommand(cmd.Cmd, BaseModel):
             return
         class_name = words[0]
 
-        if self.check_class(class_name):
-            if len(words) < 2:
-                print("** instance id missing **")
-                return
-            instance_id = words[1]
+        try:
+            if not self.check_class(class_name):
+                raise ClassNotFoundError("** class doesn't exist **")
 
+            if len(words) < 2:
+                raise InstanceNotFoundError("** instance id missing **")
+
+            instance_id = words[1]
             key = "{}.{}".format(class_name, instance_id)
             objects_dict = storage.all()
 
@@ -97,7 +100,48 @@ class HBNBcommand(cmd.Cmd, BaseModel):
                 del objects_dict[key]
                 storage.save()
             else:
-                print("** no instance found **")
+                raise InstanceNotFoundError("** no instance found **")
+
+        except (ClassNotFoundError, InstanceNotFoundError) as e:
+            print(str(e))
+
+    def do_all(self, line):
+        """
+        Prints all string representation of all instances based
+        or not on the class name
+        """
+        objects_dict = storage.all()
+        if line == "":
+            for key in objects_dict:
+                print(objects_dict[key])
+        elif self.check_class(line):
+            for key in objects_dict:
+                if objects_dict[key].__class__.__name__ == line:
+                    print(objects_dict[key])
+        else:
+            print("** class doesn't exist **")
+
+    def do_update(self, line):
+        """
+        Updates an instance based on the class name and id
+        by adding or updating attribute
+        """
+        words = line.split()
+        if len(words) < 1:
+            print("** class name missing **")
+            return
+        class_name = words[0]
+        if not self.check_class(class_name):
+            print("** class doesn't exist **")
+            return
+        if len(words) < 2:
+            print("** instance id missing **")
+            return
+        instance_id = words[1]
+        key = "{}.{}".format(class_name, instance_id)
+        objects_dict = storage.all()
+        if key not in objects_dict:
+            print("** no instance found **")
 
 
 if __name__ == "__main__":
