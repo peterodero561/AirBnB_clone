@@ -10,7 +10,7 @@ from models import storage
 class HBNBcommand(cmd.Cmd, BaseModel):
     """ Console class to handle the input and output """
     #    intro = "Welcome to HBNB console!\nType help or ? to list commands.\n"
-    prompt = "(hbnb)"
+    prompt = "(hbnb) "
 
     def check_class(self, line):
         """
@@ -27,9 +27,12 @@ class HBNBcommand(cmd.Cmd, BaseModel):
         """ Perform action when reaching end of line """
         return True
 
+    def emptyline(self):
+        '''prints nothing incase of an enmpty line and enter'''
+        pass
+
     def do_quit(self, line):
         """ Quit command to exit the program """
-        #   print("Exiting ...")
         return True
 
     def do_create(self, line):
@@ -55,7 +58,6 @@ class HBNBcommand(cmd.Cmd, BaseModel):
             print("** class name missing **")
             return
         class_name = words[0]
-
         if self.check_class(class_name):
             if len(words) < 2:
                 print("** instance id missing **")
@@ -146,3 +148,4 @@ class HBNBcommand(cmd.Cmd, BaseModel):
 
 if __name__ == "__main__":
     HBNBcommand().cmdloop()
+
