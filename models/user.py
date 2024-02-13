@@ -11,10 +11,13 @@ class User(BaseModel):
     """
     User class
     """
-    email = ""
-    password = ""
-    first_name = ""
-    last_name = ""
+    def __init__(self, *args, **kwargs):
+        """Initialize user instance"""
+        super().__init__(*args, **kwargs)
+        email = ""
+        password = ""
+        first_name = ""
+        last_name = ""
 
     @classmethod
     def load(cls, class_name, instance_id):
