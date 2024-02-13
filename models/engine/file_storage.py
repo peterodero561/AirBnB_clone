@@ -20,7 +20,7 @@ class FileStorage:
         return self.__objects
 
     def new(self, obj):
-        '''Sete in __objects the onj with key <obj class name>.id'''
+        '''Set in __objects the onj with key <obj class name>.id'''
         key = "{}.{}".format(type(obj).__name__, obj.id)
         self.__objects[key] = obj
 
@@ -41,6 +41,7 @@ class FileStorage:
         otherwise, do nothing. If the file doesn’t exist,
         no exception should be raised)'''
         from ..base_model import BaseModel
+        from ..user import User
         try:
             with open(self.__file_path, 'r') as f:
                 data = json.load(f)
