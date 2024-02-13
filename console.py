@@ -5,7 +5,7 @@
 import cmd
 import json
 from models.base_model import BaseModel
-from models import storage
+from models.engine.file_storage import FileStorage
 
 
 class HBNBcommand(cmd.Cmd):
@@ -36,9 +36,9 @@ class HBNBcommand(cmd.Cmd):
         """ Quit command to exit the program """
         return True
 
-    def do_create(self, line):
-        """
-        Creates a new instance of BaseModel, saves it (to the JSON file) and
+    def do_create(self, arg):
+        """Creates a new instance of BaseModel,
+        saves it (to the JSON file) and
         prints the id
         """
         args = arg.split()
@@ -61,96 +61,147 @@ class HBNBcommand(cmd.Cmd):
         Print string representation of instance based on class name
         and id
         """
-        words = line.split()
-        if len(words) < 1:
+        args = arg.split()
+        if not args:
             print("** class name missing **")
             return
-        class_name = words[0]
-        if self.check_class(class_name):
-            if len(words) < 2:
-                print("** instance id missing **")
-                return
-            instance_id = words[1]
 
-            key = "{}.{}".format(class_name, instance_id)
-            objects_dict = storage.all()
-
-            if key in objects_dict:
-                instance = objects_dict[key]
-                print(instance)
-            else:
-                print("** no instance found **")
-
-        else:
+        class_name = args[0]
+        if class_name != "BaseModel":
             print("** class doesn't exist **")
             return
 
-    def do_destroy(self, line):
-        """
-        Deletes an instance based on the class name and id
-        """
-        words = line.split()
-        if len(words) < 1:
-            print("** class name missing **")
-            return
-        class_name = words[0]
+        if len(args) < 2:
+            print("** instance id missing **")
 
+        instance_id = args[1]
         try:
-            if not self.check_class(class_name):
-                raise ClassNotFoundError("** class doesn't exist **")
+            obj = BaseModel.load(class_name, instance_id)
+            print(obj)
+        except FileNotFoundError:
+            print("** no instance found ** ")
 
-            if len(words) < 2:
-                raise InstanceNotFoundError("** instance id missing **")
-
-            instance_id = words[1]
-            key = "{}.{}".format(class_name, instance_id)
-            objects_dict = storage.all()
-
-            if key in objects_dict:
-                del objects_dict[key]
-                storage.save()
-            else:
-                raise InstanceNotFoundError("** no instance found **")
-
-        except (ClassNotFoundError, InstanceNotFoundError) as e:
-            print(str(e))
-
-    def do_all(self, line):
-        """
-        Prints all string representation of all instances based
-        or not on the class name
-        """
-        objects_dict = storage.all()
-        if line == "":
-            for key in objects_dict:
-                print(objects_dict[key])
-        elif self.check_class(line):
-            for key in objects_dict:
-                if objects_dict[key].__class__.__name__ == line:
-                    print(objects_dict[key])
-        else:
-            print("** class doesn't exist **")
-
-    def do_update(self, line):
-        """
-        Updates an instance based on the class name and id
-        by adding or updating attribute
-        """
-        words = line.split()
-        if len(words) < 1:
+    def do_destroy(self, arg):
+        ''' Deletes an instance based on the class name
+            and id (save the change into the JSON file).
+        '''
+        args = arg.split()
+        if not args:
             print("** class name missing **")
             return
-        class_name = words[0]
-        if not self.check_class(class_name):
+
+        class_name = args[0]
+        if class_name != "BaseModel":
             print("** class doesn't exist **")
             return
-        if len(words) < 2:
+
+        if len(args) < 2:
             print("** instance id missing **")
             return
-        instance_id = words[1]
-        key = "{}.{}".format(class_name, instance_id)
-        objects_dict = storage.all()
-        if key not in objects_dict:
+        instance_id = args[1]
+        try:
+            # load data from JSON file
+            with open("file.json", "r") as f:
+                data = json.load(f)
+
+            key = f"{class_name}.{instance_id}"
+            if key not in data:
+                print("** no instance found **")
+                return
+
+            # delete instance
+            del data[key]
+
+            # save updated data to json file
+            with open("file.json", "w") as f:
+                json.dump(data, f)
+        except FileNotFoundError:
+            print("** no instance found **")
+
+    def do_all(self, arg):
+        ''' Prints all string representation of all instances
+            based or not on the class name.
+        '''
+        try:
+            args = arg.split()
+            if not args:
+                class_name = None
+            else:
+                class_name = args[0]
+                if class_name != "BaseModel":
+                    print("** class doesn't exist **")
+                    return
+
+            # load data from json file
+            with open("file.json", "r") as f:
+                data = json.load(f)
+
+            if class_name:
+                filtered_data = {
+                        key: value for key,
+                        value in data.items() if key.startswith(
+                            class_name + ".")
+                        }
+            else:
+                filtered_data = data
+
+            if not filtered_data:
+                print("** no instances found **")
+                return
+
+            # print string representaton of each instance
+            for obj_data in filtered_data.values():
+                obj = BaseModel(**obj_data)
+                print(obj)
+        except FileNotFoundError:
+            print("** no instances found **")
+
+    def do_update(self, arg):
+        '''Updates an instance based on the class name and
+            id by adding or updating attribute
+            (save the change into the JSON file).
+        '''
+        args = arg.split()
+        if not args:
+            print("** class name missing **")
+            return
+        class_name = args[0]
+        if class_name != "BaseModel":
+            print("** class doesn't exist **")
+            return
+        if len(args) < 2:
+            print("** instance id missing **")
+            return
+        instance_id = args[1]
+        if len(args) < 3:
+            print("** attribute name missing **")
+            return
+        attribute_name = args[2]
+        if len(args) < 4:
+            print("** value missing **")
+            return
+        attribute_value = args[3]
+        try:
+            with open("file.json", "r") as f:
+                data = json.load(f)
+            key = f"{class_name}.{instance_id}"
+            if key not in data:
+                print("** no instance found **")
+                return
+            obj_data = data[key]
+            obj = BaseModel(**obj_data)
+
+            # check if the attribut name is valid and not reserved
+            if attribute_name in ["id", "created_at", "updated_at"]:
+                print("** cannot update reserved atrribute **")
+                return
+
+            setattr(obj, attribute_name, attribute_value)
+            data[key] = obj.to_dict()
+            with open("file.json", "w") as f:
+                json.dump(data, f)
+
+        except FileNotFoundError:
             print("** no instance found **")
 
 
