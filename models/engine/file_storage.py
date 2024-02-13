@@ -44,7 +44,7 @@ class FileStorage:
         from ..user import User
         from ..place import Place
         from ..state import State
-        from ..city import city
+        from models.city import City
         from ..amenity import Amenity
         from ..review import Review
         try:

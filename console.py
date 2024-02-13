@@ -6,6 +6,11 @@ import cmd
 import json
 from models.base_model import BaseModel
 from models.user import User
+from models.place import Place
+from models.city import City
+from models.amenity import Amenity
+from models.state import State
+from models.review import Review
 from models.engine.file_storage import FileStorage
 
 
@@ -13,8 +18,15 @@ class HBNBcommand(cmd.Cmd):
     """ Console class to handle the input and output """
     #    intro = "Welcome to HBNB console!\nType help or ? to list commands.\n"
     prompt = "(hbnb) "
-    class_list = ["BaseModel", "User", "Place",
-            "State", "City", "Amenity", "Review"]
+    class_list = [
+            "BaseModel",
+            "User",
+            "Place",
+            "State",
+            "City",
+            "Amenity",
+            "Review"
+            ]
 
     def check_class(self, line):
         """
@@ -45,7 +57,11 @@ class HBNBcommand(cmd.Cmd):
         prints the id
         """
         args = arg.split()
-        if args[0] not in HBNBcommand.class_list:
+        if not args:
+            print("** class name missing **")
+            return
+        class_name = args[0]
+        if class_name not in HBNBcommand.class_list:
             print("** class name missing **")
             return
         try:
@@ -67,8 +83,8 @@ class HBNBcommand(cmd.Cmd):
             elif args[0] == "Amenity":
                 new = Amenity()
                 new.save()
-             elif args[0] == "Reveiw":
-                new = Reviem()
+            elif args[0] == "Review":
+                new = Review()
                 new.save()
             else:
                 print("** class doesn't exist **")
@@ -112,7 +128,7 @@ class HBNBcommand(cmd.Cmd):
                 obj = Amenity.load(class_name, instance_id)
             elif class_name == "Review":
                 obj = Review.load(class_name, instance_id)
-            elif:
+            else:
                 print("** class doesn't exist **")
             print(obj)
         except FileNotFoundError:
