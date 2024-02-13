@@ -13,7 +13,8 @@ class HBNBcommand(cmd.Cmd):
     """ Console class to handle the input and output """
     #    intro = "Welcome to HBNB console!\nType help or ? to list commands.\n"
     prompt = "(hbnb) "
-    class_list = ["BaseModel", "User"]
+    class_list = ["BaseModel", "User", "Place",
+            "State", "City", "Amenity", "Review"]
 
     def check_class(self, line):
         """
@@ -51,16 +52,30 @@ class HBNBcommand(cmd.Cmd):
             if args[0] == "BaseModel":
                 new = BaseModel()
                 new.save()
-            else:
+            elif args[0] == "User":
                 new = User()
                 new.save()
+            elif args[0] == "Place":
+                new = Place()
+                new.save()
+            elif args[0] == "State":
+                new = State()
+                new.save()
+            elif args[0] == "City":
+                new = City()
+                new.save()
+            elif args[0] == "Amenity":
+                new = Amenity()
+                new.save()
+             elif args[0] == "Reveiw":
+                new = Reviem()
+                new.save()
+            else:
+                print("** class doesn't exist **")
+                return
             print(new.id)
         except NameError:
-            print("** class doesn't exist**")
-        # if self.check_class(line):
-            # new_instance = globals()[line]()
-            #  new_instance.save()
-            # print(new_instance.id)
+            print("** class doesn't exist** ")
 
     def do_show(self, arg):
         """
@@ -85,8 +100,20 @@ class HBNBcommand(cmd.Cmd):
         try:
             if class_name == "BaseModel":
                 obj = BaseModel.load(class_name, instance_id)
-            else:
+            elif class_name == "User":
                 obj = User.load(class_name, instance_id)
+            elif class_name == "Place":
+                obj = Place.load(class_name, instance_id)
+            elif class_name == "City":
+                obj = City.load(class_name, instance_id)
+            elif class_name == "State":
+                obj = State.load(class_name, instance_id)
+            elif class_name == "Amenity":
+                obj = Amenity.load(class_name, instance_id)
+            elif class_name == "Review":
+                obj = Review.load(class_name, instance_id)
+            elif:
+                print("** class doesn't exist **")
             print(obj)
         except FileNotFoundError:
             print("** no instance found ** ")
