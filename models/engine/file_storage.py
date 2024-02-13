@@ -42,6 +42,11 @@ class FileStorage:
         no exception should be raised)'''
         from ..base_model import BaseModel
         from ..user import User
+        from ..place import Place
+        from ..state import State
+        from ..city import city
+        from ..amenity import Amenity
+        from ..review import Review
         try:
             with open(self.__file_path, 'r') as f:
                 data = json.load(f)
