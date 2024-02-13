@@ -5,6 +5,7 @@
 import cmd
 import json
 from models.base_model import BaseModel
+from models.user import User
 from models.engine.file_storage import FileStorage
 
 
@@ -12,6 +13,7 @@ class HBNBcommand(cmd.Cmd):
     """ Console class to handle the input and output """
     #    intro = "Welcome to HBNB console!\nType help or ? to list commands.\n"
     prompt = "(hbnb) "
+    class_list = ["BaseModel", "User"]
 
     def check_class(self, line):
         """
@@ -42,12 +44,16 @@ class HBNBcommand(cmd.Cmd):
         prints the id
         """
         args = arg.split()
-        if args[0] != "BaseModel":
+        if args[0] not in HBNBcommand.class_list:
             print("** class name missing **")
             return
         try:
-            new = BaseModel()
-            new.save()
+            if args[0] == "BaseModel":
+                new = BaseModel()
+                new.save()
+            else:
+                new = User()
+                new.save()
             print(new.id)
         except NameError:
             print("** class doesn't exist**")
@@ -67,16 +73,20 @@ class HBNBcommand(cmd.Cmd):
             return
 
         class_name = args[0]
-        if class_name != "BaseModel":
+        if class_name not in HBNBcommand.class_list:
             print("** class doesn't exist **")
             return
 
         if len(args) < 2:
             print("** instance id missing **")
+            return
 
         instance_id = args[1]
         try:
-            obj = BaseModel.load(class_name, instance_id)
+            if class_name == "BaseModel":
+                obj = BaseModel.load(class_name, instance_id)
+            else:
+                obj = User.load(class_name, instance_id)
             print(obj)
         except FileNotFoundError:
             print("** no instance found ** ")
@@ -91,7 +101,7 @@ class HBNBcommand(cmd.Cmd):
             return
 
         class_name = args[0]
-        if class_name != "BaseModel":
+        if class_name not in HBNBcommand.class_list:
             print("** class doesn't exist **")
             return
 
@@ -128,7 +138,7 @@ class HBNBcommand(cmd.Cmd):
                 class_name = None
             else:
                 class_name = args[0]
-                if class_name != "BaseModel":
+                if class_name not in HBNBcommand.class_list:
                     print("** class doesn't exist **")
                     return
 
@@ -166,7 +176,7 @@ class HBNBcommand(cmd.Cmd):
             print("** class name missing **")
             return
         class_name = args[0]
-        if class_name != "BaseModel":
+        if class_name not in HBNBcommand.class_list:
             print("** class doesn't exist **")
             return
         if len(args) < 2:
