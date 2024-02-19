@@ -1,0 +1,24 @@
+.filters{
+    background-color: white;
+    height: 70px;
+    width: 100%;
+    border: 1px solid #DDDDDD;
+    position: relative;
+}
+
+#search{
+    background-color: #FF5A5F;
+    color: #FFFFFF;
+    height: 48;
+    width: 20%;
+    border: 0;
+    border-radius: 4px;
+    text-align: center;
+    line-height: 60px;
+    border-right: 30px;
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+#search:hover{
+    opacity: 0.9;
+}
