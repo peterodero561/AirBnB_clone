@@ -4,6 +4,9 @@
     width: 100%;
     border: 1px solid #DDDDDD;
     position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
 }
 
 #search{
@@ -18,9 +21,26 @@
     border-right: 30px;
     opacity: 1;
     transition: opacity 0.3s;
-    position: absolute;
-    
 }
 #search:hover{
     opacity: 0.9;
+}
+
+.locations, .amenities{
+    height: 100%;
+    width: 25%;
+    border-right: solid #DDDDDD 1px;
+}
+
+.locations{
+    border-right: none;
+}
+
+h3{
+    font-weight: 600;
+}
+
+h4{
+    font-weight: 400;
+    font-size: 14px;
 }
